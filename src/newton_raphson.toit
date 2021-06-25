@@ -89,8 +89,8 @@ solve --initial/num=0.0 --goal/num=0.0 --max_iterations=20 --precision=1e9 [--fu
   return x
 
 /**
-See $solve.  This version throws an exception if there is no convergence.
+Variant of $(solve --initial --goal --max_iterations --precision [--function] [--derivative] [--no_convergence]).
+This version throws an exception if there is no convergence.
 */
 solve --initial/num=0.0 --goal/num=0.0 --max_iterations=20 --precision=1e9 [--function] [--derivative]:
   return solve --initial=initial --goal=goal --max_iterations=max_iterations --precision=precision --function=function --derivative=derivative --no_convergence=: throw "DID_NOT_CONVERGE"
-
