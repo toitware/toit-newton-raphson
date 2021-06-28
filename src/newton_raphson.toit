@@ -69,7 +69,7 @@ example2:
   print solution
 ```
 */
-solve --initial/num=0.0 --goal/num=0.0 --max_iterations=20 --precision=1e9 [--function] [--derivative] [--no_convergence]:
+solve --initial/num=0.0 --goal/num=0.0 --max_iterations=20 --precision=1e9 [--function] [--derivative] [--no_convergence] -> float:
   x/float := initial.to_float
   previous := float.NAN
   max_iterations.repeat: | repeats |
@@ -92,5 +92,5 @@ solve --initial/num=0.0 --goal/num=0.0 --max_iterations=20 --precision=1e9 [--fu
 Variant of $(solve --initial --goal --max_iterations --precision [--function] [--derivative] [--no_convergence]).
 This version throws an exception if there is no convergence.
 */
-solve --initial/num=0.0 --goal/num=0.0 --max_iterations=20 --precision=1e9 [--function] [--derivative]:
+solve --initial/num=0.0 --goal/num=0.0 --max_iterations=20 --precision=1e9 [--function] [--derivative] -> float:
   return solve --initial=initial --goal=goal --max_iterations=max_iterations --precision=precision --function=function --derivative=derivative --no_convergence=: throw "DID_NOT_CONVERGE"
