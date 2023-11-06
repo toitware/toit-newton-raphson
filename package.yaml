@@ -1,1 +1,2 @@
-# Toit Package.
+name: newton_raphson
+description: Implementation of the root-finding algorithm named after Isaac Newton and Joseph Raphson.
