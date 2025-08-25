@@ -4,7 +4,7 @@
 
 import expect show *
 import math show *
-import newton_raphson
+import newton-raphson
 
 main:
   example1
@@ -17,9 +17,9 @@ example1:
   // The derivative is 3x^2 + 0.6x + 1
   derivative := (: 3.0*it*it + 0.6*it + 1.0)
 
-  s := newton_raphson.solve --function=function --derivative=derivative --precision=1
+  s := newton-raphson.solve --function=function --derivative=derivative --precision=1
 
-  expect_equals 10.0
+  expect-equals 10.0
     s*s*s + 0.3*s*s + s
 
 example2:
@@ -33,6 +33,6 @@ example2:
   // defined at 0.
   // We define the goal as 10.0 because we have 10 on the right hand side
   // instead of 0.0, which is the default.
-  s := newton_raphson.solve --goal=10.0 --initial=1.0 --function=function --derivative=derivative
+  s := newton-raphson.solve --goal=10.0 --initial=1.0 --function=function --derivative=derivative
 
   expect (10.0 - (function.call s)).abs < 0.000_000_001
