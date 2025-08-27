@@ -32,7 +32,12 @@ example2:
   // defined at 0.
   // We define the goal as 10.0 because we have 10 on the right hand side
   // instead of 0.0, which is the default.
-  solution := newton-raphson.solve --goal=10.0 --initial=1.0 --function=function --derivative=derivative
+  solution := newton-raphson.solve
+      --goal=10.0
+      --initial=1.0
+      --function=function
+      --derivative=derivative
 
-  // Prints 2.0997856714017091306 because this is the solution of ln(x) + x^3 = 10.0
+  // Prints 2.0997856714017091306 because this is the solution
+  // of ln(x) + x^3 = 10.0.
   print solution
