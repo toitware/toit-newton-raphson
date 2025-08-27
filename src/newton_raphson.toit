@@ -13,7 +13,7 @@ You must supply two blocks: $function for the function f, and $derivative for
   start at the $initial value, which defaults to 0.0, and attempt to find a
   solution where the $function evaluates to the $goal, default 0.0.
 
-$max_iterations denotes the maximum number of iterations of Newton's method
+$max-iterations denotes the maximum number of iterations of Newton's method
   that will be used before giving up.  Default is 20.  After half of this
   number, default 10 iterations, the algorithm gives up searching for an
   exact answer and accepts a value that is close enough.
@@ -22,7 +22,7 @@ $precision denotes what 'close enough' means.  The default value, 1e9, means
   that a difference between successive estimates that is within a factor of
   0.999_999_999 and 1.000_000_001 of the previous estimate will be accepted.
 
-The $no_convergence block determines what happens if the method does not
+The $no-convergence block determines what happens if the method does not
   converge.  It is called with the best estimate so far, which is probably
   not a good estimate, and may be infinite or NaN.
 
@@ -69,28 +69,28 @@ example2:
   print solution
 ```
 */
-solve --initial/num=0.0 --goal/num=0.0 --max_iterations=20 --precision=1e9 [--function] [--derivative] [--no_convergence] -> float:
-  x/float := initial.to_float
+solve --initial/num=0.0 --goal/num=0.0 --max-iterations=20 --precision=1e9 [--function] [--derivative] [--no-convergence] -> float:
+  x/float := initial.to-float
   previous := float.NAN
-  max_iterations.repeat: | repeats |
+  max-iterations.repeat: | repeats |
     top := (function.call x) - goal
     if top == 0: return x
-    new_x := x - top / (derivative.call x)
-    if new_x == x: return x
+    new-x := x - top / (derivative.call x)
+    if new-x == x: return x
     // A billionth is a suitable precision to aim for with IEEE doubles.
-    if new_x == previous or repeats > max_iterations / 2 and (new_x / (new_x - x)).abs > precision:
+    if new-x == previous or repeats > max-iterations / 2 and (new-x / (new-x - x)).abs > precision:
       // Oscillating around an answer.  Pick the best of the last two.
-      old_diff := (function.call x) - goal
-      new_diff := (function.call new_x) - goal
-      return old_diff.abs < new_diff.abs ? x : new_x
+      old-diff := (function.call x) - goal
+      new-diff := (function.call new-x) - goal
+      return old-diff.abs < new-diff.abs ? x : new-x
     previous = x
-    x = new_x
-  no_convergence.call x
+    x = new-x
+  no-convergence.call x
   return x
 
 /**
-Variant of $(solve --initial --goal --max_iterations --precision [--function] [--derivative] [--no_convergence]).
+Variant of $(solve --initial --goal --max-iterations --precision [--function] [--derivative] [--no-convergence]).
 This version throws an exception if there is no convergence.
 */
-solve --initial/num=0.0 --goal/num=0.0 --max_iterations=20 --precision=1e9 [--function] [--derivative] -> float:
-  return solve --initial=initial --goal=goal --max_iterations=max_iterations --precision=precision --function=function --derivative=derivative --no_convergence=: throw "DID_NOT_CONVERGE"
+solve --initial/num=0.0 --goal/num=0.0 --max-iterations=20 --precision=1e9 [--function] [--derivative] -> float:
+  return solve --initial=initial --goal=goal --max-iterations=max-iterations --precision=precision --function=function --derivative=derivative --no-convergence=: throw "DID_NOT_CONVERGE"
