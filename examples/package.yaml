@@ -1,0 +1,3 @@
+dependencies:
+  newton_raphson:
+    path: ..
