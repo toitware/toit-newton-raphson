@@ -15,23 +15,60 @@ main:
   s/num := ?
   GOAL ::= 10.sqrt
   // Use a precision of 1 to terminate early when half the max iterations has been hit.
-  s = newton-raphson.solve --function=function --derivative=derivative --max-iterations=3 --initial=2 --precision=1
+  s = newton-raphson.solve
+      --function=function
+      --derivative=derivative
+      --max-iterations=3
+      --initial=2
+      --precision=1
   expect (s - GOAL).abs < 0.000_1
-  s = newton-raphson.solve --function=function --derivative=derivative --max-iterations=4 --initial=2 --precision=1
+  s = newton-raphson.solve
+      --function=function
+      --derivative=derivative
+      --max-iterations=4
+      --initial=2
+      --precision=1
   expect (s - GOAL).abs < 0.000_000_1
-  s = newton-raphson.solve --function=function --derivative=derivative --max-iterations=6 --initial=2 --precision=1
+  s = newton-raphson.solve
+      --function=function
+      --derivative=derivative
+      --max-iterations=6
+      --initial=2
+      --precision=1
   expect (s - GOAL).abs < 0.000_000_000_000_1
 
   // Use the did not converge block.
-  newton-raphson.solve --function=function --derivative=derivative --max-iterations=2 --initial=2 --no-convergence=:
-    expect (it - GOAL).abs < 0.2
-    print it
-  newton-raphson.solve --function=function --derivative=derivative --max-iterations=3 --initial=2 --no-convergence=:
-    expect (it - GOAL).abs < 0.000_1
-    print it
-  newton-raphson.solve --function=function --derivative=derivative --max-iterations=4 --initial=2 --no-convergence=:
-    expect (it - GOAL).abs < 0.000_000_1
-    print it
-  s = newton-raphson.solve --function=function --derivative=derivative --max-iterations=5 --initial=2
+  newton-raphson.solve
+      --function=function
+      --derivative=derivative
+      --max-iterations=2
+      --initial=2
+      --if-not-converge=:
+        expect (it - GOAL).abs < 0.2
+        print it
+        it
+  newton-raphson.solve
+      --function=function
+      --derivative=derivative
+      --max-iterations=3
+      --initial=2
+      --if-not-converge=:
+        expect (it - GOAL).abs < 0.000_1
+        print it
+        it
+  newton-raphson.solve
+      --function=function
+      --derivative=derivative
+      --max-iterations=4
+      --initial=2
+      --if-not-converge=:
+        expect (it - GOAL).abs < 0.000_000_1
+        print it
+        it
+  s = newton-raphson.solve
+      --function=function
+      --derivative=derivative
+      --max-iterations=5
+      --initial=2
   expect-equals GOAL s
   print s

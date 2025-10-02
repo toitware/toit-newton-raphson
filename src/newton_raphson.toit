@@ -5,6 +5,28 @@
 import math show *
 
 /**
+Deprecated. Use $(solve [--function] [--derivative] [--if-not-converge]) instead.
+*/
+solve -> float
+    --initial/num=0.0
+    --goal/num=0.0
+    --max-iterations=20
+    --precision=1e9
+    [--function]
+    [--derivative]
+    [--no_convergence]:
+  return solve
+      --initial=initial
+      --goal=goal
+      --max-iterations=max-iterations
+      --precision=precision
+      --function=function
+      --derivative=derivative
+      --if-not-converge=:
+        no_convergence.call it
+        it
+
+/**
 Performs Newton-Raphson solving of a formula.  If you want to find x, but you
   only have y=f(x) then this uses an iterative process to find x from y.
 
@@ -22,9 +44,11 @@ $precision denotes what 'close enough' means.  The default value, 1e9, means
   that a difference between successive estimates that is within a factor of
   0.999_999_999 and 1.000_000_001 of the previous estimate will be accepted.
 
-The $no-convergence block determines what happens if the method does not
+The $if-not-converge block determines what happens if the method does not
   converge.  It is called with the best estimate so far, which is probably
-  not a good estimate, and may be infinite or NaN.
+  not a good estimate, and may be infinite or NaN. The returned value is
+  returned as the result of the function. If the block returns it must thus
+  return a float or null.
 
 There are a lot of pitfalls in the Newton-Raphson method, especially with
   functions that have multiple inflection points.  See
@@ -78,7 +102,14 @@ example2:
   print solution
 ```
 */
-solve --initial/num=0.0 --goal/num=0.0 --max-iterations=20 --precision=1e9 [--function] [--derivative] [--no_convergence] -> float:
+solve -> float?
+    --initial/num=0.0
+    --goal/num=0.0
+    --max-iterations=20
+    --precision=1e9
+    [--function]
+    [--derivative]
+    [--if-not-converge]:
   x/float := initial.to-float
   previous := float.NAN
   max-iterations.repeat: | repeats |
@@ -94,12 +125,18 @@ solve --initial/num=0.0 --goal/num=0.0 --max-iterations=20 --precision=1e9 [--fu
       return old-diff.abs < new-diff.abs ? x : new-x
     previous = x
     x = new-x
-  no_convergence.call x
-  return x
+  return if-not-converge.call x
 
 /**
-Variant of $(solve --initial --goal --max-iterations --precision [--function] [--derivative] [--no_convergence]).
+Variant of $(solve --initial --goal --max-iterations --precision [--function] [--derivative] [--if-not-converge]).
 This version throws an exception if there is no convergence.
 */
 solve --initial/num=0.0 --goal/num=0.0 --max-iterations=20 --precision=1e9 [--function] [--derivative] -> float:
-  return solve --initial=initial --goal=goal --max-iterations=max-iterations --precision=precision --function=function --derivative=derivative --no_convergence=: throw "DID_NOT_CONVERGE"
+  return solve
+      --initial=initial
+      --goal=goal
+      --max-iterations=max-iterations
+      --precision=precision
+      --function=function
+      --derivative=derivative
+      --if-not-converge=: throw "DID_NOT_CONVERGE"
